@@ -24,7 +24,10 @@ RUN wget -q -O knox.zip http://ftp-stud.hs-esslingen.de/pub/Mirrors/ftp.apache.o
 
 RUN ln -s /opt/knox-${KNOX_VERSION} /opt/knox
 
-ENV GATEWAY_HOME /opt/knox/
+# PZ:  fix permissions for gateway shell scripts
+#RUN chmod -R a+rwx /opt/knox
+
+ENV GATEWAY_HOME /opt/knox
 
 WORKDIR $GATEWAY_HOME
 
@@ -33,6 +36,9 @@ COPY knox-pw.expect-script /tmp
 COPY run-knox.sh /opt
 
 RUN /tmp/knox-pw.expect-script
+
+# PZ:  fix permissions for gateway shell scripts
+RUN chmod -R a+rwx /opt/knox
 
 # Enable mounting an external config
 VOLUME /opt/knox/conf
